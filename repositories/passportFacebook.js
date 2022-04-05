@@ -1,8 +1,11 @@
+const dotenv = require("dotenv")
+dotenv.config()
+
 module.exports = ({passport, faceBookStrategy, facebookUser}) => {
     return Object.freeze({
     faceBookStrategy: passport.use(new faceBookStrategy({
-            clientID: "1023416688608122",
-            clientSecret: "781c6dfdc5cc7ee24e66df64b71aacc6",
+            clientID: process.env.FACEBOOK_APP_ID,
+            clientSecret: process.env.FACEBOOK_APP_SECRET,
             callbackURL: "http://localhost:3000/facebook/callback",
             profileFields: ['id', 'displayName', 'name', 'email']
         }, 
