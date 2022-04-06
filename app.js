@@ -21,8 +21,7 @@ app.use(cors({
 app.use(cookieParser())
 
 //Schema
-const facebookUser = require('./model/FacebookUser')
-const  gitHubUser = require('./model/GithubUser')
+const User = require('./model/User')
 
 //Passport
 const {passport, faceBookStrategy, gitHubStrategy} = require('./middleware/passport')
@@ -33,17 +32,19 @@ app.use(passport.session())
 
 //Passport Facebook functions repository
 const passportFacebook = require('./repositories/passportFacebook')
-const passportFacebookFunctions = passportFacebook({passport, faceBookStrategy, facebookUser})
-passportFacebookFunctions.faceBookStrategy
+const passportFacebookFunctions = passportFacebook({passport, faceBookStrategy, User})
 passportFacebookFunctions.serializeUser
 passportFacebookFunctions.deSerializeUser
+passportFacebookFunctions.faceBookStrategy
+
 
 //Passport Github functions repository
 const passportGithub = require('./repositories/passportGithub')
-const passportGithubFunctions = passportGithub({passport, gitHubStrategy, gitHubUser})
-passportGithubFunctions.gitHubStrategy
+const passportGithubFunctions = passportGithub({passport, gitHubStrategy, User})
 passportGithubFunctions.serializeUser
 passportGithubFunctions.deSerializeUser
+passportGithubFunctions.gitHubStrategy
+
 
 //Routes
 /*Facebook*/
@@ -54,6 +55,13 @@ app.use('/facebook', require("./routes/facebook"))
 /*Github*/
 app.use('/auth/github', require('./routes/github'))
 app.use('/github', require('./routes/github'))
+
+//Logout
+app.use('/logout', (req,res) => {
+    req.session = null
+    req.logout()
+    res.redirect('/')
+})
 
 app.listen(3000, () =>{
     console.log("Listening on port 3000")
