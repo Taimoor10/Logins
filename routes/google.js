@@ -4,7 +4,7 @@ const{passport} = require("../middleware/passport")
 module.exports = router
 
 //Google Authorization
-router.get('/login', passport.authenticate(
+router.get('/', passport.authenticate(
     'google', 
     {
         scope: ['email', 'profile']
@@ -13,7 +13,6 @@ router.get('/login', passport.authenticate(
 
 //Google Profile
 router.get('/profile', isLoggedIn, (req,res) => {
-    console.log(req.user)
     res.render('profile', {
         user: req.user
     })
@@ -26,6 +25,17 @@ router.get('/connect', passport.authorize(
         scope: ['email', 'profile']
     }
 ))
+
+//Google Account Unlink
+router.get('/unlink', (req,res) => {
+    var user = req.user
+
+    user.google.token = null
+    user.save((err) => {
+        if(err) throw err
+        res.redirect('/google/profile')
+    })
+})
 
 //Google Callback
 router.get('/callback', passport.authenticate(

@@ -19,7 +19,18 @@ module.exports = ({passport, googleStrategy, User}) => {
                         return done(err)
                     if(user)
                     {
-                        console.log("Google User does exist")
+                        //For No Token
+                        if(!user.google.token)
+                        {
+                            user.google.token = token
+                            user.google.id = profile.id
+                            user.google.name = profile.displayName
+                            user.google.email = profile.emails[0].value
+                            
+                            user.save((err) => {
+                                if(err) throw err
+                            })
+                        }
                         return done(null, user)
                     }
                     else

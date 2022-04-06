@@ -50,6 +50,7 @@ passportGoogleFunctions.serializeUser
 passportGoogleFunctions.googleStrategy
 
 //Routes
+
 /*Facebook*/
 app.use('/', require('./routes/home'))
 app.use('/auth/facebook', require('./routes/facebook'))
@@ -63,8 +64,9 @@ app.use('/github', require('./routes/github'))
 app.use('/auth/google', require('./routes/google'))
 app.use('/google', require('./routes/google'))
 
-//Logout
-app.use('/auth/logout', (req,res) => {
+
+//Logout from all Accounts
+app.use('/logout', (req,res) => {
         req.logOut();
         res.status(200).clearCookie('connect.sid', {
         path: '/'
@@ -74,6 +76,8 @@ app.use('/auth/logout', (req,res) => {
     });
 })
 
+
+//Server
 app.listen(3000, () =>{
     console.log("Listening on port 3000")
 })

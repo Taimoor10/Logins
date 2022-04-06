@@ -5,7 +5,7 @@ module.exports = router
 
 
 //Github Authorization
-router.get('/login', passport.authenticate(
+router.get('/', passport.authenticate(
     'github', 
     {
         scope: ['user', 'user:email']
@@ -14,7 +14,6 @@ router.get('/login', passport.authenticate(
 
 //Github Profile
 router.get('/profile', isLoggedIn, (req,res) => {
-    console.log(req.user)
     res.render('profile', {
         user: req.user
     })
@@ -27,6 +26,17 @@ router.get('/connect', passport.authorize(
         scope: ['user', 'user:email']
     }
 ))
+
+//Github Account Unlink
+router.get('/unlink', (req,res) => {
+    var user = req.user
+
+    user.github.token = null
+    user.save((err) => {
+        if(err) throw err
+        res.redirect('/github/profile')
+    })
+})
 
 //Github Callback
 router.get('/callback', passport.authenticate(

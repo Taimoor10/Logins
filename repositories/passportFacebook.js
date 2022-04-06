@@ -17,9 +17,20 @@ module.exports = ({passport, faceBookStrategy, User}) => {
 		    			if(err)
 		    				return done(err);
 		    			if(user)
-                        {
-                            console.log("Facebook User does exist")
-		    				return done(null, user)
+                        {	
+							//For No Token
+							if(!user.facebook.token)
+							{
+                            	user.facebook.token = token
+								user.facebook.id = profile.id
+		    					user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName
+		    					user.facebook.email = profile.emails[0].value
+								
+								user.save((err) => {
+									if(err) throw err
+								})
+							}
+							return done(null, user)
                         }
 		    			else {
 		    				var fbUser = new User()

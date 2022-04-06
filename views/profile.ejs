@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Logins</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <style>
@@ -15,8 +15,8 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/auth/logout" class="btn btn-default btn-sm">Logout</a>
+        <h1><span> </span> Social Logins</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
     <div class="row">
@@ -28,12 +28,12 @@
                 <!-- check if the user has this token (is the user authenticated with this social account) -->
                 <% if (user.facebook.token) { %>
                     <p>
-                        <strong>id</strong>: <%= user.facebook.id %><br>
-                        <strong>token</strong>: <%= user.facebook.token %><br>
-                        <strong>email</strong>: <%= user.facebook.email %><br>
-                        <strong>name</strong>: <%= user.facebook.name %><br>
+                        <strong>id</strong>: <%= user.facebook.id %> <br>
+                        <strong>token</strong>: <%= user.facebook.token %> <br>
+                        <strong>email</strong>: <%= user.facebook.email %> <br>
+                        <strong>name</strong>: <%= user.facebook.name %> <br>
                     </p>
-                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
+                    <a href="/auth/facebook/unlink" class="btn btn-primary">Unlink </a>
                 <% } else { %>
                     <a href="/auth/facebook/connect" class="btn btn-primary">Connect Facebook</a>
                 <% } %>
@@ -55,7 +55,7 @@
                         <strong>email</strong>: <%= user.github.email %><br>
                         <strong>name</strong>: <%= user.github.name %><br>
                     </p>
-                    <a href="/unlink/github" class="btn btn-primary">Unlink</a>
+                    <a href="/auth/github/unlink" class="btn btn-primary">Unlink</a>
                 <% } else { %>
                     <a href="/auth/github/connect" class="btn btn-primary">Connect Github</a>
                 <% } %>
@@ -77,9 +77,9 @@
                         <strong>email</strong>: <%= user.google.email %><br>
                         <strong>name</strong>: <%= user.google.name %><br>
                     </p>
-                    <a href="/unlink/github" class="btn btn-primary">Unlink</a>
+                    <a href="/auth/google/unlink" class="btn btn-primary">Unlink</a>
                 <% } else { %>
-                    <a href="/auth/github/connect" class="btn btn-primary">Connect Google</a>
+                    <a href="/auth/google/connect" class="btn btn-primary">Connect Google</a>
                 <% } %>
 
             </div>

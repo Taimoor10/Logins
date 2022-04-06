@@ -1,6 +1,6 @@
 //Login Authentication
-function isLoggedIn(req, res, next) {
-    if(req.isAuthenticated())
+async function isLoggedIn(req, res, next) {
+    if(req.user)
     {
         return next()
     }

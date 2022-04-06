@@ -19,7 +19,18 @@ module.exports = ({passport, gitHubStrategy, User}) => {
                         return done(err)
                     if(user)
                     {
-                        console.log("Github User does exist")
+                        //For No Token
+                        if(!user.github.token)
+                        {
+                            user.github.token = token
+                            user.github.id = profile.id
+                            user.github.name = profile.displayName
+                            user.github.email = profile.emails[0].value
+                            
+                            user.save((err) => {
+                                if(err) throw err
+                            })
+                        }
                         return done(null, user)
                     }
                     else
