@@ -1,19 +1,22 @@
 const dotenv = require("dotenv")
 dotenv.config()
 
-module.exports = ({passport, gitHubStrategy, gitHubUser}) => {
+module.exports = ({passport, gitHubStrategy, User}) => {
     return Object.freeze({
     gitHubStrategy: passport.use(new gitHubStrategy({
             clientID: process.env.GITHUB_APP_ID,
             clientSecret: process.env.GITHUB_APP_SECRET,
             callbackURL: "http://localhost:3000/auth/github/callback",
-            profileFields: ['id', 'name', 'email', 'gender']
+            passReqToCallback: true,
+            profileFields: ['id', 'displayName', 'email', 'gender']
         }, 
-        (token, refreshToken, profile, done) =>{
+        (req, token, refreshToken, profile, done) =>{
             process.nextTick(() =>{
-                gitHubUser.findOne({ 'uid': profile.id}, (err,user) => {
-                    if(err) return done(err)
-
+            if(!req.user)
+            {
+                User.findOne({ 'github.id': profile.id}, (err,user) => {
+                    if(err) 
+                        return done(err)
                     if(user)
                     {
                         console.log("Github User does exist")
@@ -21,12 +24,11 @@ module.exports = ({passport, gitHubStrategy, gitHubUser}) => {
                     }
                     else
                     {
-                        var ghUser = new gitHubUser()
-                        ghUser.uid = profile.id,
-                        ghUser.token = token,
-                        ghUser.email = profile.emails[0].value,
-                        ghUser.name = profile.displayName,
-                        ghUser.gender = profile.gender
+                        var ghUser = new User()
+                        ghUser.github.id =  profile.id,
+                        ghUser.github.token = token,
+                        ghUser.github.email = profile.emails[0].value,
+                        ghUser.github.name = profile.displayName
             
                         ghUser.save((err) => {
                             if(err) throw err
@@ -34,15 +36,30 @@ module.exports = ({passport, gitHubStrategy, gitHubUser}) => {
                         })
                     }
                 })
-            })
-        })),
+            }
+            else
+            {
+                var ghUser = req.user
+                ghUser.github.id =  profile.id
+                ghUser.github.token = token
+                ghUser.github.email = profile.emails[0].value
+                ghUser.github.name = profile.displayName
+
+                ghUser.save(function(err){
+                    if(err)
+                        throw err
+                    return done(null, ghUser);
+                })
+            }
+        })
+    })),
     
     serializeUser: passport.serializeUser(async (user, done) => {
             done(null, user.id)
         }),
     
     deSerializeUser: passport.deserializeUser(async (id, done) => {
-            facebookUser.findById(id, (err,user) =>{
+            User.findById(id, (err,user) =>{
                 done(err, user)
             })
         })

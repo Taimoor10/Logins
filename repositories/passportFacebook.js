@@ -1,40 +1,58 @@
 const dotenv = require("dotenv")
 dotenv.config()
 
-module.exports = ({passport, faceBookStrategy, facebookUser}) => {
+module.exports = ({passport, faceBookStrategy, User}) => {
     return Object.freeze({
     faceBookStrategy: passport.use(new faceBookStrategy({
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_APP_SECRET,
             callbackURL: "http://localhost:3000/auth/facebook/callback",
+            passReqToCallback: true,
             profileFields: ['id', 'displayName', 'name', 'email', 'gender']
         }, 
-        (token, refreshToken, profile, done) =>{
+        (req, token, refreshToken, profile, done) => {
             process.nextTick(() =>{
-                facebookUser.findOne({ 'uid': profile.id}, (err,user) => {
-                    if(err) return done(err)
+                if(!req.user){
+					User.findOne({'facebook.id': profile.id}, function(err, user){
+		    			if(err)
+		    				return done(err);
+		    			if(user)
+                        {
+                            console.log("Facebook User does exist")
+		    				return done(null, user)
+                        }
+		    			else {
+		    				var fbUser = new User()
+		    				fbUser.facebook.id = profile.id
+		    				fbUser.facebook.token = token
+		    				fbUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName
+		    				fbUser.facebook.email = profile.emails[0].value
 
-                    if(user)
-                    {
-                        console.log("Facebook User does exist")
-                        return done(null, user)
-                    }
-                    else
-                    {
-                        var fbUser = new facebookUser()
-                        fbUser.uid = profile.id,
-                        fbUser.token = token,
-                        fbUser.email = profile.emails[0].value,
-                        fbUser.name = profile.name.givenName + ' ' + profile.name.familyName,
-                        fbUser.gender = profile.gender
-            
-                        fbUser.save((err) => {
-                            if(err) throw err
-                            return done(null, fbUser)
-                        })
-                    }
-                })
+		    				fbUser.save(function(err){
+		    					if(err)
+		    						throw err;
+		    					return done(null, fbUser)
+		    				})
+		    			}
+		    		});
+	    		}
+
+	    		else {
+
+	    			var fbUser = req.user
+	    			fbUser.facebook.id = profile.id
+	    			fbUser.facebook.token = token
+	    			fbUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName
+	    			fbUser.facebook.email = profile.emails[0].value
+
+	    			fbUser.save(function(err){
+	    				if(err)
+	    					throw err
+	    				return done(null, fbUser);
+	    			})
+	    		}
             })
+        
         })),
     
     serializeUser: passport.serializeUser(async (user, done) => {
@@ -42,7 +60,7 @@ module.exports = ({passport, faceBookStrategy, facebookUser}) => {
         }),
     
     deSerializeUser: passport.deserializeUser(async (id, done) => {
-            facebookUser.findById(id, (err,user) =>{
+            User.findById(id, (err,user) =>{
                 done(err, user)
             })
         })
