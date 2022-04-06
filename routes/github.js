@@ -3,10 +3,6 @@ const isLoggedIn = require('../middleware/authorization')
 const{passport} = require("../middleware/passport")
 module.exports = router
 
-//Github Login
-router.get('/', (req,res) => {
-    res.send("take this")
-})
 
 //Github Authorization
 router.get('/login', passport.authenticate(
@@ -20,10 +16,17 @@ router.get('/login', passport.authenticate(
 router.get('/profile', isLoggedIn, (req,res) => {
     console.log(req.user)
     res.render('profile', {
-        user: req.user,
-        provider: 'github'
+        user: req.user
     })
 })
+
+//Github Account Link
+router.get('/connect', passport.authorize(
+    'github',
+    {
+        scope: ['user', 'user:email']
+    }
+))
 
 //Github Callback
 router.get('/callback', passport.authenticate(

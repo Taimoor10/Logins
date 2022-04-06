@@ -6,7 +6,6 @@ var userData = mongoose.Schema({
         token: String,
         email: String,
         name: String,
-        gender: String,
     },
 
     github: {
@@ -14,7 +13,13 @@ var userData = mongoose.Schema({
         token: String,
         email: String,
         name: String,
-        gender: String,
+    },
+
+    google: {
+        id: String,
+        token: String,
+        email: String,
+        name: String,
     }
 })
 

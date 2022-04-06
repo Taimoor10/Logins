@@ -1,51 +1,91 @@
-<!-- views/index.ejs -->
+<!-- views/profile.ejs -->
 <!doctype html>
 <html>
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body  { 
+            padding-top:80px; word-wrap:break-word; 
+        }
+    </style>
 </head>
 <body>
-   <div class="container">
-        <div>
-            <h1>
-                Profile
-            </h1>
-        <a href="/facebook/logout" class="btn btn-default btn-sm">Logout</a>
-        </div>
-    <div>
-        <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook </h3>
-        <p>
-            <% if(user && provider==='facebook'){ %>
-                <p>
-                    id:     <%= user.uid %>   <br>
-                    token:  <%= user.token %> <br>
-                    email:  <%= user.email %> <br>
-                    name:   <%= user.name %>  <br>
-                </h1>
-              <% } else{ %>  
-                <p>
-                    Facebook Placeholder
-                </h1>
-             <% } %>
-        </p>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <a href="/auth/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
-    <div>
-        <h3 class="text-primary"><span class="fa fa-github"></span> Github </h3>
-        <p>
-            <% if(user && provider==='github'){ %>
-                <p>
-                    id <%= user.id %> <br>
-                </h1>
-              <% } else{ %>  
-                <p>
-                    GitHub Placeholder
-                </h1>
-             <% } %>
-        </p>
+    <div class="row">
+
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+                <!-- check if the user has this token (is the user authenticated with this social account) -->
+                <% if (user.facebook.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.facebook.id %><br>
+                        <strong>token</strong>: <%= user.facebook.token %><br>
+                        <strong>email</strong>: <%= user.facebook.email %><br>
+                        <strong>name</strong>: <%= user.facebook.name %><br>
+                    </p>
+                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
+                <% } else { %>
+                    <a href="/auth/facebook/connect" class="btn btn-primary">Connect Facebook</a>
+                <% } %>
+
+            </div>
+        </div>
     </div>
-   </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-primary"><span class="fa fa-github"></span> Github</h3>
+
+                <!-- check if the user has this token (is the user authenticated with this social account) -->
+                <% if (user.github.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.github.id %><br>
+                        <strong>token</strong>: <%= user.github.token %><br>
+                        <strong>email</strong>: <%= user.github.email %><br>
+                        <strong>name</strong>: <%= user.github.name %><br>
+                    </p>
+                    <a href="/unlink/github" class="btn btn-primary">Unlink</a>
+                <% } else { %>
+                    <a href="/auth/github/connect" class="btn btn-primary">Connect Github</a>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-primary"><span class="fa fa-google"></span> Google</h3>
+
+                <!-- check if the user has this token (is the user authenticated with this social account) -->
+                <% if (user.google.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.google.id %><br>
+                        <strong>token</strong>: <%= user.google.token %><br>
+                        <strong>email</strong>: <%= user.google.email %><br>
+                        <strong>name</strong>: <%= user.google.name %><br>
+                    </p>
+                    <a href="/unlink/github" class="btn btn-primary">Unlink</a>
+                <% } else { %>
+                    <a href="/auth/github/connect" class="btn btn-primary">Connect Google</a>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

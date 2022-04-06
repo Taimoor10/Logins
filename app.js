@@ -2,7 +2,6 @@ const express  = require("express")
 const session  = require('express-session')
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
-const cookieSession = require('cookie-session')
 const app = express()
 
 //Views
@@ -24,7 +23,7 @@ app.use(cookieParser())
 const User = require('./model/User')
 
 //Passport
-const {passport, faceBookStrategy, gitHubStrategy} = require('./middleware/passport')
+const {passport, faceBookStrategy, gitHubStrategy, googleStrategy} = require('./middleware/passport')
 app.use(session({secret: 'SECRET', resave: false, saveUninitialized: false}))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -34,7 +33,6 @@ app.use(passport.session())
 const passportFacebook = require('./repositories/passportFacebook')
 const passportFacebookFunctions = passportFacebook({passport, faceBookStrategy, User})
 passportFacebookFunctions.serializeUser
-passportFacebookFunctions.deSerializeUser
 passportFacebookFunctions.faceBookStrategy
 
 
@@ -42,9 +40,14 @@ passportFacebookFunctions.faceBookStrategy
 const passportGithub = require('./repositories/passportGithub')
 const passportGithubFunctions = passportGithub({passport, gitHubStrategy, User})
 passportGithubFunctions.serializeUser
-passportGithubFunctions.deSerializeUser
 passportGithubFunctions.gitHubStrategy
 
+
+//Google Functions repository
+const passportGoogle = require('./repositories/passportGoogle')
+const passportGoogleFunctions = passportGoogle({passport, googleStrategy, User})
+passportGoogleFunctions.serializeUser
+passportGoogleFunctions.googleStrategy
 
 //Routes
 /*Facebook*/
@@ -56,11 +59,19 @@ app.use('/facebook', require("./routes/facebook"))
 app.use('/auth/github', require('./routes/github'))
 app.use('/github', require('./routes/github'))
 
+/*Google*/
+app.use('/auth/google', require('./routes/google'))
+app.use('/google', require('./routes/google'))
+
 //Logout
-app.use('/logout', (req,res) => {
-    req.session = null
-    req.logout()
-    res.redirect('/')
+app.use('/auth/logout', (req,res) => {
+        req.logOut();
+        res.status(200).clearCookie('connect.sid', {
+        path: '/'
+    });
+    req.session.destroy(function (err) {
+         res.redirect('/');
+    });
 })
 
 app.listen(3000, () =>{

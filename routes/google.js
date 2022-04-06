@@ -1,36 +1,37 @@
 const router = require("express").Router()
-const{passport} = require("../middleware/passport")
 const isLoggedIn = require('../middleware/authorization')
+const{passport} = require("../middleware/passport")
 module.exports = router
 
-//Facebook Login
+//Google Authorization
 router.get('/login', passport.authenticate(
-    'facebook', 
+    'google', 
     {
-        scope: 'email, user_photos'
+        scope: ['email', 'profile']
     }
 ))
 
-//Facebook Authentication
-router.get('/profile', isLoggedIn, async(req,res) => {
+//Google Profile
+router.get('/profile', isLoggedIn, (req,res) => {
+    console.log(req.user)
     res.render('profile', {
         user: req.user
     })
 })
 
-//Facebook Account Link
+//Google Account Link
 router.get('/connect', passport.authorize(
-    'facebook',
+    'google',
     {
-        scope: 'email, user_photos'
+        scope: ['email', 'profile']
     }
 ))
 
-//Facebook Callback
+//Google Callback
 router.get('/callback', passport.authenticate(
-    'facebook',
+    'google',
     {
-        successRedirect: '/facebook/profile',
+        successRedirect: '/google/profile',
         failureRedirect: '/home'
     }
 ))
