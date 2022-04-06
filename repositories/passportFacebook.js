@@ -6,8 +6,8 @@ module.exports = ({passport, faceBookStrategy, facebookUser}) => {
     faceBookStrategy: passport.use(new faceBookStrategy({
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_APP_SECRET,
-            callbackURL: "http://localhost:3000/facebook/callback",
-            profileFields: ['id', 'displayName', 'name', 'email']
+            callbackURL: "http://localhost:3000/auth/facebook/callback",
+            profileFields: ['id', 'displayName', 'name', 'email', 'gender']
         }, 
         (token, refreshToken, profile, done) =>{
             process.nextTick(() =>{
@@ -16,9 +16,7 @@ module.exports = ({passport, faceBookStrategy, facebookUser}) => {
 
                     if(user)
                     {
-                        console.log("User does exist")
-                        console.log(profile)
-                        console.log(user)
+                        console.log("Facebook User does exist")
                         return done(null, user)
                     }
                     else
@@ -28,6 +26,7 @@ module.exports = ({passport, faceBookStrategy, facebookUser}) => {
                         fbUser.token = token,
                         fbUser.email = profile.emails[0].value,
                         fbUser.name = profile.name.givenName + ' ' + profile.name.familyName,
+                        fbUser.gender = profile.gender
             
                         fbUser.save((err) => {
                             if(err) throw err

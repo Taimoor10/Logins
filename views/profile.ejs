@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Facebook Login</title>
+    <title>Login</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 </head>
@@ -17,10 +17,33 @@
     <div>
         <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook </h3>
         <p>
-            id:     <%= user.uid %>   <br>
-            token:  <%= user.token %> <br>
-            email:  <%= user.email %> <br>
-            name:   <%= user.name %>  <br>
+            <% if(user && provider==='facebook'){ %>
+                <p>
+                    id:     <%= user.uid %>   <br>
+                    token:  <%= user.token %> <br>
+                    email:  <%= user.email %> <br>
+                    name:   <%= user.name %>  <br>
+                </h1>
+              <% } else{ %>  
+                <p>
+                    Facebook Placeholder
+                </h1>
+             <% } %>
+        </p>
+    </div>
+
+    <div>
+        <h3 class="text-primary"><span class="fa fa-github"></span> Github </h3>
+        <p>
+            <% if(user && provider==='github'){ %>
+                <p>
+                    id <%= user.id %> <br>
+                </h1>
+              <% } else{ %>  
+                <p>
+                    GitHub Placeholder
+                </h1>
+             <% } %>
         </p>
     </div>
    </div>

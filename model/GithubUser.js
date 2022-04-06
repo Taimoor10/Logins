@@ -1,6 +1,6 @@
 const mongoose = require('../config/mongoose')
 
-var facebookUserSchema = mongoose.Schema({
+var githubUserSchema = mongoose.Schema({
     uid: String,
     token: String,
     email: String,
@@ -8,4 +8,4 @@ var facebookUserSchema = mongoose.Schema({
     gender: String,
 })
 
-module.exports = mongoose.model('FacebookUser', facebookUserSchema)
+module.exports = mongoose.model('GithubUser', githubUserSchema)

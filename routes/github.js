@@ -1,34 +1,40 @@
 const router = require("express").Router()
-const{passport} = require("../middleware/passport")
 const isLoggedIn = require('../middleware/authorization')
+const{passport} = require("../middleware/passport")
 module.exports = router
 
-//Facebook Login
+//Github Login
+router.get('/', (req,res) => {
+    res.send("take this")
+})
+
+//Github Authorization
 router.get('/login', passport.authenticate(
-    'facebook', 
+    'github', 
     {
-        scope: 'email, user_photos'
+        scope: ['user', 'user:email']
     }
 ))
 
-//Facebook Authentication
-router.get('/profile', isLoggedIn, async(req,res) => {
+//Github Profile
+router.get('/profile', isLoggedIn, (req,res) => {
+    console.log(req.user)
     res.render('profile', {
         user: req.user,
-        provider: 'facebook'
+        provider: 'github'
     })
 })
 
-//Facebook Callback
+//Github Callback
 router.get('/callback', passport.authenticate(
-    'facebook',
+    'github',
     {
-        successRedirect: '/facebook/profile',
+        successRedirect: '/github/profile',
         failureRedirect: '/home'
     }
 ))
 
-//Facebook Logout
+//Github Logout
 router.get('/logout', (req,res) =>{
     req.session = null
     req.logout()
