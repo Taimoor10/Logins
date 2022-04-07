@@ -18,6 +18,15 @@ Social logins with multiple strategies
 3. Open the terminal and type `node app.js` or `nodemon app.js` from the parent directory
 
 
+## App Registration
+   Create Facebook, Google and Github apps to obtain ids and secrets passport authentication here:
+   
+   Facebook: `https://developers.facebook.com/apps/create/`
+
+   Google OAuth 2.0 Client IDs: `https://console.cloud.google.com/apis/credentials`
+
+   Github: `https://github.com/settings/developers`
+
 ## Authorization flow, Thought Process and Solution
 
 1. Go to `http://localhost:3000` to navigate to home page
