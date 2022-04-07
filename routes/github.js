@@ -23,9 +23,10 @@ router.get('/profile', isLoggedIn, (req,res) => {
 router.get('/connect', passport.authorize(
     'github',
     {
+        failureRedirect:'/home',
         scope: ['user', 'user:email']
-    }
-))
+    })
+)
 
 //Github Account Unlink
 router.get('/unlink', (req,res) => {

@@ -67,10 +67,15 @@ app.use('/google', require('./routes/google'))
 
 //Logout from all Accounts
 app.use('/logout', (req,res) => {
-        req.logOut();
-        res.status(200).clearCookie('connect.sid', {
+    passportFacebookFunctions.deSerializeUser
+    passportGithubFunctions.deSerializeUser
+    passportGoogleFunctions.deSerializeUser
+
+    req.logOut();
+    res.status(200).clearCookie('connect.sid', {
         path: '/'
     });
+
     req.session.destroy(function (err) {
          res.redirect('/');
     });

@@ -1,17 +1,38 @@
 const dotenv = require("dotenv")
 dotenv.config()
 
+const alert = require('alert')
+
 module.exports = ({passport, gitHubStrategy, User}) => {
     return Object.freeze({
     gitHubStrategy: passport.use(new gitHubStrategy({
             clientID: process.env.GITHUB_APP_ID,
             clientSecret: process.env.GITHUB_APP_SECRET,
-            callbackURL: "http://localhost:3000/auth/github/callback",
+            callbackURL: process.env.GITHUB_CALLBACK_URL,
             passReqToCallback: true,
             profileFields: ['id', 'displayName', 'email', 'gender']
         }, 
         (req, token, refreshToken, profile, done) =>{
             process.nextTick(() =>{
+
+                User.find({'facebook.email' : profile.emails[0].value }, (err, res) => {
+                    if(err) throw err
+                    
+                    if(res.length != 0)
+                    {
+                        alert('This email has already signed in with Facebook provider')
+                    }
+                })
+
+                User.find({'google.email' : profile.emails[0].value }, (err, res) => {
+                    if(err) throw err
+                    
+                    if(res.length != 0)
+                    {
+                        alert('This email has already signed in with Google provider')
+                    }
+                })
+
             if(!req.user)
             {
                 User.findOne({ 'github.id': profile.id}, (err,user) => {
