@@ -24,7 +24,9 @@ Social logins with multiple strategies
    
 2. On home page, there are 3 different options to login
 
-    Solution 1 => Since I had to check whether the same user has already logged in after logging in from any of the social login option, there will be a alert stating that the user has already logged in from some other provider in case of true. Since the verification is done through database, it will also be shown in case of Linking the accounts. I am simply checking that whether the user with same `email` already exists in database against the stored providers. If the user `email` already exists in the database linked to other provider, alert will be shown everytime stating that the same `email` has already been used against the specific provider.
+    **Solution 1** : 
+    
+    *Since I had to check whether the same user has already logged in after logging in from any of the social login option, there will be a alert stating that the user has already logged in from some other provider in case of true. Since the verification is done through database, it will also be shown in case of Linking the accounts. I am simply checking that whether the user with same `email` already exists in database against the stored providers. If the user `email` already exists in the database linked to other provider, alert will be shown everytime stating that the same `email` has already been used against the specific provider.*
 
     However, this is not ideal, but for demonstration purposes I have simply let user login even with same `email` and redirected to the profile page. If the `email` is found, an Alert message will be shown. This could be handled in many ways but for simplicity I have decided to use the alert message. The profile page will show the information after that
 
@@ -33,13 +35,19 @@ Social logins with multiple strategies
    
 4. Link the accounts using Link button and Unlink later with same button
    
-   Solution 2 => This is solution to the other question, that if the user login from first account (eg facebook) and then later with github or google and then try to link the facebook account. The other account will be linked based on checking the `token` property in database. The specific route `connect` will be called on requested linked account, and it will verify that whether a user have a token property set against the chosen provider in database. If a `token` is found then, the callback will redirect to the profile page with fresh information. Note that alert will be shown in this case as well if a user has already logged in with the same `email` from other provider.
+   **Solution 2** :
+
+   *This is solution to the other question, that if the user login from first account (eg facebook) and then later with github or google and then try to link the facebook account. The other account will be linked based on checking the `token` property in database. The specific route `connect` will be called on requested linked account, and it will verify that whether a user have a token property set against the chosen provider in database.* 
+   
+   Type `http://localhost:3000` in different browser window to login from other provider in the same session.
+
+   *If a `token` is found then, the callback will redirect to the profile page with fresh information. Note that alert will be shown in this case as well if a user has already logged in with the same `email` from other provider.* 
 
 5. Unlinking the account will set the token property to `null` against the selected provider
    
 6. Logout of the application will clear all sessions and cookies. If the login from any provider is not done in the same session, then a new entry will be created in database. So accounts may 
    have to be linked again if they are not already linked.
 
-   Note => I also have an alternative schema design to handle the logout option much better, but for this task, try linking and unlinking all the accounts in the same session.
+   *Note* => I also have an alternative schema design to handle the logout option much better, but for this task, try linking and unlinking all the accounts in the same session.
 
 
