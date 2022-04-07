@@ -12,7 +12,7 @@ Social logins with multiple strategies
    Github: `https://github.com/settings/developers`
 
 ## .env File
-   Copy and Paste the Application ids and secrets in the respective fields. Create a new .env file in root folder and copy this information after populating
+   Copy and Paste the Application ids and secrets in the respective fields. Update the .env file in root folder and replace with this information after populating
    
    ```s
    FACEBOOK_APP_NAME = " "
