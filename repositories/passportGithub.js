@@ -16,7 +16,6 @@ module.exports = ({passport, gitHubStrategy, User}) => {
             process.nextTick(() =>{
 
                 //Checks if User is already registered with Facebook provider
-
                 User.find({'facebook.email' : profile.emails[0].value }, (err, res) => {
                     if(err) throw err
                     

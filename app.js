@@ -2,6 +2,28 @@ const express = require("express")
 const session = require('express-session')
 const cookieParser = require("cookie-parser")
 const app = express()
+const {passport, faceBookStrategy, gitHubStrategy, googleStrategy} = require('./middleware/passport')
+
+//Schema
+const User = require('./model/User')
+
+
+//Passport Facebook functions repository
+
+const passportFacebook = require('./repositories/passportFacebook')
+const passportFacebookFunctions = passportFacebook({passport, faceBookStrategy, User})
+
+
+//Passport Github functions repository
+
+const passportGithub = require('./repositories/passportGithub')
+const passportGithubFunctions = passportGithub({passport, gitHubStrategy, User})
+
+//Google Functions repository
+
+const passportGoogle = require('./repositories/passportGoogle')
+const passportGoogleFunctions = passportGoogle({passport, googleStrategy, User})
+
 
 //Setting views and body parser
 
@@ -12,39 +34,22 @@ app.use(bodyParser.json())
 
 app.use(cookieParser())
 
-//Schema
-const User = require('./model/User')
-
 
 //Passport and Session settings
 
-const {passport, faceBookStrategy, gitHubStrategy, googleStrategy} = require('./middleware/passport')
 app.use(session({secret: 'SECRET', resave: false, saveUninitialized: false}))
 app.use(passport.initialize())
 app.use(passport.session())
 
-
-//Passport Facebook functions repository
-
-const passportFacebook = require('./repositories/passportFacebook')
-const passportFacebookFunctions = passportFacebook({passport, faceBookStrategy, User})
 passportFacebookFunctions.serializeUser
-passportFacebookFunctions.faceBookStrategy
-
-
-//Passport Github functions repository
-
-const passportGithub = require('./repositories/passportGithub')
-const passportGithubFunctions = passportGithub({passport, gitHubStrategy, User})
+passportFacebookFunctions.deSerializeUser
 passportGithubFunctions.serializeUser
-passportGithubFunctions.gitHubStrategy
-
-
-//Google Functions repository
-
-const passportGoogle = require('./repositories/passportGoogle')
-const passportGoogleFunctions = passportGoogle({passport, googleStrategy, User})
+passportGithubFunctions.deSerializeUser
 passportGoogleFunctions.serializeUser
+passportGoogleFunctions.deSerializeUser
+
+passportFacebookFunctions.faceBookStrategy
+passportGithubFunctions.gitHubStrategy
 passportGoogleFunctions.googleStrategy
 
 
