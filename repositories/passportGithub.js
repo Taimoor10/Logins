@@ -63,6 +63,7 @@ module.exports = ({passport, gitHubStrategy, User}) => {
                     else
                     {
                         //Create new User
+                        
                         var ghUser = new User()
                         ghUser.github.id =  profile.id,
                         ghUser.github.token = token,
@@ -79,7 +80,7 @@ module.exports = ({passport, gitHubStrategy, User}) => {
             else
             {
                 //Update the existing User
-                
+
                 var ghUser = req.user
                 ghUser.github.id =  profile.id
                 ghUser.github.token = token
