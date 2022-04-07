@@ -1,6 +1,36 @@
 # Logins
 Social logins with multiple strategies
 
+## App Registration
+
+   Create Facebook, Google and Github apps to obtain ids and secrets passport authentication here:
+   
+   Facebook: `https://developers.facebook.com/apps/create/`
+
+   Google OAuth 2.0 Client IDs: `https://console.cloud.google.com/apis/credentials`
+
+   Github: `https://github.com/settings/developers`
+
+## .env File
+   Copy and Paste the Application ids and secrets in the respective fields. Create a new .env file in root folder and copy this information after populating
+   
+   ```s
+   FACEBOOK_APP_NAME = " "
+   FACEBOOK_APP_ID = " "
+   FACEBOOK_APP_SECRET = " "
+   FACEBOOK_CALLBACK_URL = "http://localhost:3000/auth/facebook/callback"
+
+   GITHUB_APP_NAME = " "
+   GITHUB_APP_ID = " "
+   GITHUB_APP_SECRET = " "
+   GITHUB_CALLBACK_URL = "http://localhost:3000/auth/github/callback"
+
+   GOOGLE_APP_NAME = " "
+   GOOGLE_APP_ID = " "
+   GOOGLE_APP_SECRET = " "
+   GOOGLE_CALLBACK_URL = "http://localhost:3000/auth/google/callback"
+   ```
+
 ## Starting Instructions
 
 1. Clone the repsoitory and type `npm install` to install dependancies
@@ -17,15 +47,6 @@ Social logins with multiple strategies
 
 3. Open the terminal and type `node app.js` or `nodemon app.js` from the parent directory
 
-
-## App Registration
-   Create Facebook, Google and Github apps to obtain ids and secrets passport authentication here:
-   
-   Facebook: `https://developers.facebook.com/apps/create/`
-
-   Google OAuth 2.0 Client IDs: `https://console.cloud.google.com/apis/credentials`
-
-   Github: `https://github.com/settings/developers`
 
 ## Authorization flow, Thought Process and Solution
 
