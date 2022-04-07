@@ -25,10 +25,11 @@ Social logins with multiple strategies
 2. On home page, there are 3 different options to login
 
     **Solution 1** : 
-    
-    *Since I had to check whether the same user has already logged in after logging in from any of the social login option, there will be a alert stating that the user has already logged in from some other provider in case of true. Since the verification is done through database, it will also be shown in case of Linking the accounts. I am simply checking that whether the user with same `email` already exists in database against the stored providers. If the user `email` already exists in the database linked to other provider, alert will be shown everytime stating that the same `email` has already been used against the specific provider.*
+    ```
+    Since I had to check whether the same user has already logged in after logging in from any of the social login option, there will be a alert stating that the user has already logged in from some other provider in case of true. Since the verification is done through database, it will also be shown in case of Linking the accounts. I am simply checking that whether the user with same `email` already exists in database against the stored providers. If the user `email` already exists in the database linked to other provider, alert will be shown everytime stating that the same `email` has already been used against the specific provider.
 
     However, this is not ideal, but for demonstration purposes I have simply let user login even with same `email` and redirected to the profile page. If the `email` is found, an Alert message will be shown. This could be handled in many ways but for simplicity I have decided to use the alert message. The profile page will show the information after that
+    ```
 
 3. Select any of the login options to be redirected to a profile page where all the account + linked accounts information is listed. This page is rendered based on authentication of use
    with the help of passport library
@@ -36,12 +37,15 @@ Social logins with multiple strategies
 4. Link the accounts using Link button and Unlink later with same button
    
    **Solution 2** :
+   ```
 
-   *This is solution to the other question, that if the user login from first account (eg facebook) and then later with github or google and then try to link the facebook account. The other account will be linked based on checking the `token` property in database. The specific route `connect` will be called on requested linked account, and it will verify that whether a user have a token property set against the chosen provider in database.* 
+   This is solution to the other question, that if the user login from first account (eg facebook) and then later with github or google and then try to link the facebook account. The other account will be linked based on checking the `token` property in database. The specific route `connect` will be called on requested linked account, and it will verify that whether a user have a token property set against the chosen provider in database. 
    
    Type `http://localhost:3000` in different browser window to login from other provider in the same session.
 
-   *If a `token` is found then, the callback will redirect to the profile page with fresh information. Note that alert will be shown in this case as well if a user has already logged in with the same `email` from other provider.* 
+   If a `token` is found then, the callback will redirect to the profile page with fresh information. Note that alert will be shown in this case as well if a user has already logged in with the same `email` from other provider.
+
+   ``` 
 
 5. Unlinking the account will set the token property to `null` against the selected provider
    
