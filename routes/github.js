@@ -23,7 +23,6 @@ router.get('/profile', isLoggedIn, (req,res) => {
 router.get('/connect', passport.authorize(
     'github',
     {
-        failureRedirect:'/home',
         scope: ['user', 'user:email']
     })
 )
@@ -32,10 +31,12 @@ router.get('/connect', passport.authorize(
 router.get('/unlink', (req,res) => {
     var user = req.user
 
+    //Sets the token property to null to disconnect the user
+
     user.github.token = null
     user.save((err) => {
         if(err) throw err
-        res.redirect('/github/profile')
+        res.redirect('/auth/github/profile')
     })
 })
 
@@ -43,7 +44,7 @@ router.get('/unlink', (req,res) => {
 router.get('/callback', passport.authenticate(
     'github',
     {
-        successRedirect: '/github/profile',
+        successRedirect: '/auth/github/profile',
         failureRedirect: '/home'
     }
 ))

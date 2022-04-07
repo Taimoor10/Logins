@@ -30,10 +30,12 @@ router.get('/connect', passport.authorize(
 router.get('/unlink', (req,res) => {
     var user = req.user
 
-    user.facebook.token = null
+    //Sets the token property to null to disconnect the user
+
+    user.facebook.token = null 
     user.save((err) => {
         if(err) throw err
-        res.redirect('/facebook/profile')
+        res.redirect('/auth/facebook/profile')
     })
 })
 
@@ -41,7 +43,7 @@ router.get('/unlink', (req,res) => {
 router.get('/callback', passport.authenticate(
     'facebook',
     {
-        successRedirect: '/facebook/profile',
+        successRedirect: '/auth/facebook/profile',
         failureRedirect: '/home'
     }
 ))

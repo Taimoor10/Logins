@@ -30,10 +30,12 @@ router.get('/connect', passport.authorize(
 router.get('/unlink', (req,res) => {
     var user = req.user
 
+    //Sets the token property to null to disconnect the user
+
     user.google.token = null
     user.save((err) => {
         if(err) throw err
-        res.redirect('/google/profile')
+        res.redirect('/auth/google/profile')
     })
 })
 
@@ -41,7 +43,7 @@ router.get('/unlink', (req,res) => {
 router.get('/callback', passport.authenticate(
     'google',
     {
-        successRedirect: '/google/profile',
+        successRedirect: '/auth/google/profile',
         failureRedirect: '/home'
     }
 ))

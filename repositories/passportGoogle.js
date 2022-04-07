@@ -15,6 +15,8 @@ module.exports = ({passport, googleStrategy, User}) => {
         (req, token, refreshToken, profile, done) =>{
             process.nextTick(() =>{
 
+                //Checks if User is already registered with Facebook provider
+
                 User.find({'facebook.email' : profile.emails[0].value }, (err, res) => {
                     if(err) throw err
                     
@@ -23,6 +25,8 @@ module.exports = ({passport, googleStrategy, User}) => {
                         alert('This email has already signed in with Facebook provider')
                     }
                 })
+
+                //Checks if User is already registered with Github provider
 
                 User.find({'github.email' : profile.emails[0].value }, (err, res) => {
                     if(err) throw err
@@ -35,6 +39,8 @@ module.exports = ({passport, googleStrategy, User}) => {
 
             if(!req.user)
             {
+                //If the user has not logged in yet from Google
+
                 User.findOne({ 'google.id': profile.id}, (err,user) => {
                     if(err) 
                         return done(err)
@@ -56,6 +62,8 @@ module.exports = ({passport, googleStrategy, User}) => {
                     }
                     else
                     {
+                        //Create a new User
+
                         var googleUser = new User()
                         googleUser.google.id =  profile.id,
                         googleUser.google.token = token,
@@ -71,6 +79,8 @@ module.exports = ({passport, googleStrategy, User}) => {
             }
             else
             {
+                //Update the existing User
+                
                 var googleUser = req.user
                 googleUser.google.id =  profile.id
                 googleUser.google.token = token

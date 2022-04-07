@@ -15,6 +15,8 @@ module.exports = ({passport, gitHubStrategy, User}) => {
         (req, token, refreshToken, profile, done) =>{
             process.nextTick(() =>{
 
+                //Checks if User is already registered with Facebook provider
+
                 User.find({'facebook.email' : profile.emails[0].value }, (err, res) => {
                     if(err) throw err
                     
@@ -23,6 +25,8 @@ module.exports = ({passport, gitHubStrategy, User}) => {
                         alert('This email has already signed in with Facebook provider')
                     }
                 })
+
+                //Checks if User is already registered with Google provider
 
                 User.find({'google.email' : profile.emails[0].value }, (err, res) => {
                     if(err) throw err
@@ -35,6 +39,8 @@ module.exports = ({passport, gitHubStrategy, User}) => {
 
             if(!req.user)
             {
+                //If the user has not logged in yet from Github
+
                 User.findOne({ 'github.id': profile.id}, (err,user) => {
                     if(err) 
                         return done(err)
@@ -56,6 +62,7 @@ module.exports = ({passport, gitHubStrategy, User}) => {
                     }
                     else
                     {
+                        //Create new User
                         var ghUser = new User()
                         ghUser.github.id =  profile.id,
                         ghUser.github.token = token,
@@ -71,6 +78,8 @@ module.exports = ({passport, gitHubStrategy, User}) => {
             }
             else
             {
+                //Update the existing User
+                
                 var ghUser = req.user
                 ghUser.github.id =  profile.id
                 ghUser.github.token = token
