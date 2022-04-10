@@ -3,7 +3,7 @@ Social logins with multiple strategies
 
 ## App Registration
 
-   Create Facebook, Google and Github apps to obtain ids and secrets passport authentication here:
+   Create Facebook, Google and Github apps to obtain ids and secrets for passport authentication here:
    
    Facebook: `https://developers.facebook.com/apps/create/`
 
@@ -61,7 +61,7 @@ Social logins with multiple strategies
     However, this is not ideal, but for demonstration purposes I have simply let user login even with same `email` and redirected to the profile page. If the `email` is found, an Alert message will be shown. This could be handled in many ways but for simplicity I have decided to use the alert message. The profile page will show the information after that
     
 
-3. Select any of the login options to be redirected to a profile page where all the account + linked accounts information is listed. This page is rendered based on authentication of use
+3. Select any of the login options to be redirected to a profile page where all the account + linked accounts information is listed. This page is rendered based on authentication of user
    with the help of passport library
    
 4. Link the accounts using Link button and Unlink later with same button
@@ -77,7 +77,7 @@ Social logins with multiple strategies
 
 5. Unlinking the account will set the token property to `null` against the selected provider
    
-6. Logout of the application will clear all sessions and cookies. If the login from any provider is not done in the same session, then a new entry will be created in database. So accounts may 
+6. Logout of the application will clear all sessions and cookies. If the login from any provider is not done in the same session, then a new entry will be created in database. So accounts will 
    have to be linked again if they are not already linked.
 
    *Note* => I also have an alternative schema design to handle the logout option much better, but for this task, try linking and unlinking all the accounts in the same session
